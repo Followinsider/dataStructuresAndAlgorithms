@@ -1,0 +1,1873 @@
+# 双指针法
+## 移除元素
+```javascript
+function removeElement(nums, target) {
+  let fast = slow = 0;
+  for(; fast < nums.length; fast++) { // fast每次递增次数大于等于1
+    if (nums[fast] !== target) {
+      nums[slow++] = nums[fast];
+    };
+    fast++;
+  };
+  return slow;
+}
+```
+
+## 反转字符串
+```javascript
+function reverseStr(s) {
+	if (s.length <= 1) return s;
+  let res = s.split('');
+  let left = 0, right = res.length - 1;
+  while(left < right) {
+    [res[right], res[left]] = [res[left], res[right]];
+    left++;
+    right--;
+  }
+  return res.join('');
+}
+```
+## 替换空格
+```javascript
+// 空格替换成 -> %20
+function replaceEmptySpace(s) {
+	let res = s.split('');
+  let sumEmptySpace = 0;
+	for (let i = 0; i < res.length; i++) {
+    if (res[i] === ' ') {
+      sumEmptySpace++;
+    };
+  }
+  let left = res.length - 1;
+  let right = res.length + sumEmptySpace * 2 - 1;
+  while (left >= 0) {
+    if (nums[left] === ' ') {
+      nums[right--] = '0';
+      nums[right--] = '2';
+      nums[right--] = '%';
+    }else {
+      nums[right--] = nums[left--];
+    }
+  }
+  return res.join('');
+}
+```
+## 翻转字符串里的单词
+```javascript
+// 全部翻转再单个按空格翻转,同时还要去除一些空格
+function reverseWord(s) {
+	
+}
+
+function reverseStr(s) {
+	if (s.length <= 1) return s;
+  let res = s.split('');
+  let left = 0, right = res.length - 1;
+  while(left < right) {
+    [res[right], res[left]] = [res[left], res[right]];
+    left++;
+    right--;
+  }
+  return res.join('');
+}
+
+function removeEmptySpace(s) {
+  let res = s.split('');
+  const len = res.length;
+  
+  let fast = slow = 0;
+  for (let i = 0; i < len; i++) {
+    if (res[i] === ' ' && (i === 0 || res[i - 1] === ' ')) {
+      fast++;
+      continue;
+    }
+    
+  }
+}
+```
+
+
+
+## 翻转链表
+```javascript
+function reverseListNode(head) {
+	if (!head || !head.next) {
+    return;
+  }
+  let cur, temp, pre;
+  cur = head, pre = null;
+  while(cur) {
+    temp = cur.next;
+    cur.next = pre;
+    pre = cur;
+    cur = temp;
+  }
+  return p;
+}
+```
+## 删除链表的倒数第 n 个节点
+```javascript
+// 快慢指针+虚拟头结点
+function remove_N_ListNode(head, n) {
+  let dummpyHead = new ListNode(null, head); // 虚拟头结点
+  let fast = slow = dummpyHead;
+  while(n--) {
+    fast = fast.next;
+  }
+  // fast到达第n个节点
+  while(fast && fast.next) {
+    fast = fast.next;
+    slow = slow.next;
+  }
+  slow.next = slow.next.next;
+  return dummpyHead.next;
+}
+```
+## 链表相交
+```javascript
+// 判断是否有环节点
+function judgeCircleNode(headA, headB) {
+  let p1 = headA;
+  let p2 = headB;
+  while(p1 !== p2) {
+    if (!p1) {
+      p1 = headB;
+    }else {
+      p1 = p1.next;
+    }
+    if (!p2) {
+      p2 = headA;
+    }else {
+      p2 = p2.next;
+    }
+  }
+  return p1;
+}
+```
+## 环形链表(同时找到环入口)
+```javascript
+// 快慢指针 ->找到相遇节点
+function findCircleStart(head) {
+  let fast = head, slow = head.next;
+  while(fast !== slow) {
+    fast = fast.next.next;
+    slow = slow.next;
+  }
+  // fast和slow相等，有可能是null，注意区分
+  if (!fast) return null;
+  // 找到相遇节点了，重新指定一个指针到开头head
+  slow = head;
+  while(fast !== slow) {
+    fast = fast.next;
+    slow = slow.next;
+  }
+  return slow;
+}
+```
+## 三数之和
+```javascript
+// 三数之和为 0 , 双指针思想（注意得先排序），外层for循环 &&left && right
+function threeSum(nums) {
+  const res = [], len = nums.length // res存放三元组[[a,b,c]]
+  // 将数组排序
+  nums.sort((a, b) => a - b) // [-4,-1,-1,0,1,2]
+  for (let i = 0; i < len; i++) {
+      let l = i + 1, r = len - 1, iNum = nums[i] // l->1 r->5 iNum->-4
+      // 数组排过序，如果第一个数大于0直接返回res
+      if (iNum > 0) return res
+      // 去重 -> 针对a
+      if (i > 0 && iNum == nums[i - 1]) continue;
+  
+      while(l < r) {
+          let lNum = nums[l], rNum = nums[r], threeSum = iNum + lNum + rNum
+          // 三数之和小于0，则左指针向右移动
+          if (threeSum < 0) l++;
+          else if (threeSum > 0) r--;
+          else {
+              res.push([iNum, lNum, rNum])
+              // 去重 针对b 和 c
+              while(l < r && nums[l] == nums[l + 1]){
+                  l++;
+              }
+              while(l < r && nums[r] == nums[r - 1]) {
+                  r--;
+              }
+              l++;
+              r--;
+          }
+      }
+  }
+  return res;
+}
+```
+## 四数之和
+```javascript
+function fourSum(nums, target) {
+  if (nums.length < 4) return [];
+  nums.sort((a, b) => a - b);
+  const res = [];
+  const len = nums.length;
+  for (let i = 0; i < len - 3; i++) {
+    // 去重i
+    // if (i === 0 && arr[i] > 0) return []; 四数之和的target不为0，则此处不能直接return;
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    for (let j = i + 1; j < len - 2; j++) {
+      // 去重j
+      if (j > i + 1 && nums[j] === nums[j - 1]) continue;
+      let left = j + 1, right = len - 1;
+      while(left < right) {
+        let sum = nums[i] + nums[j] + nums[left] + nums[right];
+        if (sum > target) {
+          right--;
+        }else if (sum < target) {
+          left++;
+        }else {
+          res.push([ nums[i], nums[j], nums[left], nums[right] ]);
+          while(left < right && nums[left] === nums[++left]) {
+            continue;
+          };
+          while(left < right && nums[right] === nums[--right]) {
+            continue;
+          };
+        }
+      }
+    }
+  }
+  return res;
+}
+```
+
+
+# 栈结构
+## 栈的特性与使用
+简单栈的特点可以用一句话来概括，**先进后出**（LIFO）顺序。比如 Java 代码（解析在注释里）：
+```java
+Stack<Character> t = new Stack<Character>(); 
+t.push('a'); 
+t.push('b'); 
+t.peek(); // 这里得到栈顶元素'b' 
+t.pop();  // 这里将栈顶元素'b'弹出
+t.peek(); // 此时栈顶元素为'a' 
+t.pop();  // 这里将栈顶元素'a'弹出 
+```
+这部分代码片段执行效果如下图所示：
+![](https://cdn.nlark.com/yuque/0/2023/gif/26762664/1679845881409-f9cea925-74a2-443f-a502-2d66dcd09544.gif#averageHue=%23fdfdfd&clientId=uedda4a7c-35ea-4&id=TQC4h&originHeight=1080&originWidth=1920&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uda7d17e7-ebd9-45c4-bd70-746385831bb&title=)
+### 1.判断字符串括号是否合法
+【**题目**】字符串中只有字符'('和')'。合法字符串需要括号可以配对。比如：
+输入："()"
+输出：true
+**解释**：()，()()，(())是合法的。)(，()(，(()是非法的。
+请你实现一个函数，来判断给定的字符串是否合法。
+```java
+boolean isValid(String s)
+```
+![image.png](https://cdn.nlark.com/yuque/0/2023/png/26762664/1679845978183-50d9aaee-81ad-47af-9ce1-f6a9fc1d87a6.png#averageHue=%23f9f6f6&clientId=uedda4a7c-35ea-4&id=mMLUl&originHeight=295&originWidth=877&originalType=binary&ratio=1&rotation=0&showTitle=false&size=27023&status=done&style=none&taskId=ud724f196-18ee-4383-8ccf-c4f05aceba1&title=)
+```javascript
+// 存放内容
+// const isValid = str => {
+//     const stack = [];
+//     const arr = str.split("");
+//     const len = arr.length;
+//     if (len < 0) return;
+//     for (let i = 0; i < len; i++) {
+//         if (arr[i] === "(") {
+//             stack.push(")");
+//         }else {
+//             if (stack.pop() !== arr[i]) {
+//                 return false;
+//             }
+//         }
+//     }
+//     return stack.length === 0;
+// }
+
+// 由于存放的是单一 )，则可以计数器优化
+// const isValid = str => {
+//     let res = 0;
+//     const arr = str.split("");
+//     const len = arr.length;
+//     if (len < 0) return;
+//     for (let i = 0; i < len; i++) {
+//         if (arr[i] === "(") {
+//             res++;
+//         }else if (arr[i] === ")"){
+//             res--;
+//         }
+//     }
+//     return res === 0;
+// }
+
+
+// 栈存放具体多个内容类型
+// () [] {}
+const isValid = str => {
+  let stack = [];
+  const arr = str.split("");
+  const len = arr.length;
+  if (len < 0) return;
+  for (let i = 0; i < len; i++) {
+    switch(arr[i]) {
+      case "(":
+        stack.push(")");
+        break;
+      case "[":
+        stack.push("]");
+        break;
+      case "{":
+        stack.push("}");
+        break;
+      default:
+        if (stack.pop() !== arr[i]) return false;
+        break;
+    }
+  }
+  return stack.length === 0;
+}
+console.log(JSON.stringify(isValid("(([{}{{}}}]))")));
+```
+### 2.大鱼吃小鱼
+【**题目**】在水中有许多鱼，可以认为这些鱼停放在 x 轴上。再给定两个数组 Size，Dir，Size[i] 表示第 i 条鱼的大小，Dir[i] 表示鱼的方向 （0 表示向左游，1 表示向右游）。这两个数组分别表示鱼的大小和游动的方向，并且两个数组的长度相等。鱼的行为符合以下几个条件:
+
+1.  所有的鱼都同时开始游动，每次按照鱼的方向，都游动一个单位距离； 
+2.  当方向相对时，大鱼会吃掉小鱼； 
+3.  鱼的大小都不一样。 
+
+输入：Size = [4, 2, 5, 3, 1], Dir = [1, 1, 0, 0, 0]
+输出：3
+请完成以下接口来计算还剩下几条鱼？
+```java
+int solution(int[] Size, int[] Dir);
+```
+![](https://cdn.nlark.com/yuque/0/2023/gif/26762664/1679845993696-915e4f3b-f3e4-4e5d-9b7b-bb158041fcd2.gif#averageHue=%23fafafa&clientId=uedda4a7c-35ea-4&id=YIHYt&originHeight=480&originWidth=853&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=ubb0eb9f0-057f-4889-aac6-25ac6f601d0&title=)
+【**分析**】对于这道题而言，大鱼吃掉小鱼的时候，可以认为是一种**消除**行为。只不过与括号匹配时的行为不一样：
+
+-  括号匹配是会**同时**把左括号与右括号消除掉； 
+-  大鱼吃小鱼，**只会把小鱼**消除掉。 
+```javascript
+// SizeArr [4, 3, 2, 1, 5]; 值表示大小
+// DireArr [0, 1, 0, 0, 0];  值表示方向 规定0为左，1为右
+// res-> 2 表示最后只剩下两条鱼，大小分别为 4 和 5
+// let sizeArr = [4, 3, 2, 1, 5];
+// let direArr = [0, 1, 0, 0, 0];
+let sizeArr = [10, 2, 2, 4, 3];
+let direArr = [1, 1, 0, 1, 0];
+function bigFishEatsmallFish(sizeArr, direArr) {
+    let stack = []; // 存储索引
+    const len = sizeArr.length;
+    for(let i = 0; i < len; i++) {
+        let hasEat = false;
+        while(!isEmpty(stack) && direArr[i] === 0 && direArr[peek(stack)] === 1) { // direArr[i]即将要进栈，
+            if (sizeArr[i] < sizeArr[peek(stack)]) {
+                hasEat = true;
+                break;
+            }
+            if (!hasEat) {
+                stack.pop();
+            }
+        }
+        if (!hasEat) {
+            stack.push(i);
+        }
+    }
+    console.log(stack);
+    return stack.length;
+
+}
+function isEmpty(stack) {
+    return stack.length === 0;
+}
+function peek(stack) {
+    return stack[stack.length - 1];
+}
+console.log(bigFishEatsmallFish(sizeArr, direArr));
+```
+## 单调栈解题技巧
+首先我们看一下**单调栈的定义**：单调栈就是指栈中的元素**必须**是按照**升序**排列的栈，或者是**降序**排列的栈。对于这两种排序方式的栈，还给它们各自取了小名。
+升序排列的栈称为**递增栈**，如下图所示：
+![](https://cdn.nlark.com/yuque/0/2023/gif/26762664/1679846149097-2edd59d6-872b-421e-9502-00cba096ac65.gif#averageHue=%23fefefe&clientId=uedda4a7c-35ea-4&id=GjeTI&originHeight=480&originWidth=853&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=uce9c9068-4f46-4f8f-8319-1f2984a1cc1&title=)
+
+降序排列的栈称为**递减栈**，如下图所示：
+![](https://cdn.nlark.com/yuque/0/2023/gif/26762664/1679846149083-8499c1df-d7ea-4726-8f68-aede6c981478.gif#averageHue=%23fefefe&clientId=uedda4a7c-35ea-4&id=dSuLq&originHeight=480&originWidth=853&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=u1a0ac711-21f2-4554-8b03-a5d5a46ef9e&title=)
+
+_注意：示意图所展示的这两种栈是横向排列的。栈中元素的值，分别用不同高度的矩形来表示，值越大，矩形越高。_
+接下来我们介绍一下递增栈的有序性，一句话：“**任何时候都需要保证栈的有序性**”。
+递增栈的特性可以演示如下（上方数组是要依次入栈的元素）：
+![](https://cdn.nlark.com/yuque/0/2023/gif/26762664/1679846149044-8d1637f5-78c0-4e79-8544-e71d3c33cf18.gif#averageHue=%23fefefe&clientId=uedda4a7c-35ea-4&id=dqV2Y&originHeight=480&originWidth=853&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=u7bc9a45d-6315-4f01-af10-1dbb9187665&title=)
+
+递减栈的特性可以演示如下：
+![](https://cdn.nlark.com/yuque/0/2023/gif/26762664/1679846149554-bcb63c79-40e4-428e-8957-eca48954e8c6.gif#averageHue=%23fefefe&clientId=uedda4a7c-35ea-4&id=uOX31&originHeight=480&originWidth=853&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&taskId=ud1d14ab9-948a-4fab-8b10-9fb711ee73f&title=)
+
+通过这两个动图，我们可以总结出单调栈的特点，如下图所示：
+![image.png](https://cdn.nlark.com/yuque/0/2023/png/26762664/1679846149176-9f5196a9-9035-42d3-a633-4afa27fcf8b9.png#averageHue=%23f9f5f4&clientId=uedda4a7c-35ea-4&id=AcwLY&originHeight=489&originWidth=982&originalType=binary&ratio=1&rotation=0&showTitle=false&size=44367&status=done&style=none&taskId=ub5e26278-897c-4d24-b831-2e6dea50a68&title=)
+### 3.找出数组中右边/左边比我大/小的元素
+以找出数组中右边比我小的元素为例进行题意介绍：
+【**题目**】一个整数数组 A，找到每个元素：右边第一个比我小的下标位置，没有则用 -1 表示。
+输入：[5, 2]
+输出：[1, -1]
+**解释**：因为元素 5 的右边离我最近且比我小的位置应该是 A[1]，最后一个元素 2 右边没有比 2 小的元素，所以应该输出 -1。
+```javascript
+// 递增栈，小数消灭大数
+// 递减栈，大数消灭小数
+let arr = [4, 3, 2, 1, 5]; // return [1, 2, 3, -1, -1]
+const result1 = findFirstSmallByRight(arr);
+const result2 = findFirstBigByRight(arr);
+const result3 = findFirstSmallByLeft(arr);
+const result4 = findFirstBigByLeft(arr);
+console.log(JSON.stringify(result1));
+console.log(JSON.stringify(result2));
+console.log(JSON.stringify(result3));
+console.log(JSON.stringify(result4));
+
+
+/**
+ * 数组中右边第一个比我小的元素
+ */
+
+function findFirstSmallByRight(arr) {
+  const len = arr.length; // 5
+  let stack = [];
+  let res = [];
+  for (let i = 0; i < len; i++) { // 0 < 5
+    while (!isEmpty(stack) && arr[i] < arr[peek(stack)]) {
+      res[stack.pop()] = i;
+    }
+    stack.push(i); // [0, ] -> [1, ] -> [2, ] -> [3, ] -> [3, 4]
+  }
+  while(!isEmpty(stack)) {
+    res[stack.pop()] = -1;
+  }
+  return res; // [1, 2, 3, -1, -1]
+}
+
+/**
+ * 数组中右边第一个比我大元素
+ */
+
+function findFirstBigByRight(arr) {
+  const len = arr.length; // 5
+  let stack = [];
+  let res = [];
+  for (let i = 0; i < len; i++) { // 0 < 5
+    while (!isEmpty(stack) && arr[i] > arr[peek(stack)]) {
+      res[stack.pop()] = i;
+    }
+    stack.push(i); // [0, ] -> [0, 1, ] -> [0, 1, 2, ] -> [0, 1, 2, 3, ] -> [4, ]
+  }
+  while(!isEmpty(stack)) {
+    res[stack.pop()] = -1;
+  }
+  return res; // [4, 4 ,4, 4, -1]
+}
+
+/**
+ * 数组中元素左边离我最近且比我小的元素的位置
+ */
+function findFirstSmallByLeft(arr) { // [4, 3, 2, 1, 5]
+  const len = arr.length; // 5
+  let stack = [];
+  let res = [];
+  for (let i = len - 1; i >= 0 ; i--) { // 0 < 5
+    while (!isEmpty(stack) && arr[i] < arr[peek(stack)]) {
+      res[stack.pop()] = i;
+    }
+    stack.push(i); // [4, ] -> [3, ] -> [3, 2, ] -> [3, 2, 1, ] -> [3, 2, 1, 0]
+  }
+  while(!isEmpty(stack)) {
+    res[stack.pop()] = -1;
+  }
+  return res; // [-1, -1, -1, -1, 3]
+}
+
+/**
+ * 数组中元素左边离我最近且比我大的元素的位置
+ */
+function findFirstBigByLeft(arr) { // [4, 3, 2, 1, 5]
+  const len = arr.length; // 5
+  let stack = [];
+  let res = [];
+  for (let i = len - 1; i >= 0; i--) { // 0 < 5
+    while (!isEmpty(stack) && arr[i] > arr[peek(stack)]) {
+      res[stack.pop()] = i;
+    }
+    stack.push(i); // [4, ] -> [4, 3, ] -> [4, 2, ] -> [4, 1, ] -> [4, 0]
+  }
+  while(!isEmpty(stack)) {
+    res[stack.pop()] = -1;
+  }
+  return res; // [-1, 0, 1, 2, -1]
+}
+
+function isEmpty(stack) {
+  return stack.length === 0;
+}
+function peek(stack) {
+  return stack[stack.length - 1];
+}
+```
+### 4.字典序最小的 k 个数的子序列
+【**题目**】给定一个正整数数组和 k，要求依次取出 k 个数，输出其中数组的一个子序列，需要满足：
+1. **长度为 k**；
+2.**字典序最小**。
+输入：nums = [3,5,2,6], k = 2
+输出：[2,6]
+**解释**：在所有可能的解：{[3,5], [3,2], [3,6], [5,2], [5,6], [2,6]} 中，[2,6] 字典序最小。
+所谓字典序就是，给定两个数组：x = [x1,x2,x3,x4]，y = [y1,y2,y3,y4]，如果 0 ≤ p < i，xp == yp 且 xi < yi，那么我们认为 x 的字典序小于 y。
+```javascript
+let nums = [3, 5, 2, 6, 100, 0, 1];
+let k = 2;
+console.log(miniDictionarySortOfK(nums, 2));
+function miniDictionarySortOfK(nums, k) {
+    const len = nums.length;
+    if (len < k) return [];
+    let stack = [];
+    for (let i = 0; i < nums.length; i++) { 
+        let num = nums[i];
+        let left = len - i; // 4 -> 3 -> 2 -> 1
+        while(!isEmpty(stack) && num < peek(stack) && (stack.length + left) > k) {
+            stack.pop();
+        };
+        stack.push(num); // [3, ] -> [3, 5, ] -> [2, ]
+    }
+    return stack;
+}
+function isEmpty(stack) {
+    return stack.length === 0;
+}
+function peek(stack) {
+    return stack[stack.length - 1];
+}
+```
+
+# 队列
+
+# 二叉树
+## 二叉树的遍历（前中后&层次）
+### 递归法
+```javascript
+var preorderTraversal = function(root) {
+    const result = [];
+    const dfs = root => {
+        if (!root) return;
+        result.push(root.val);
+        dfs(root.left);
+        dfs(root.right);
+    }
+    dfs(root);
+    return result;
+};
+```
+
+```javascript
+var inorderTraversal = function(root) {
+    const result = [];
+    const dfs = root => {
+        if (!root) return;
+        dfs(root.left);
+        result.push(root.val);
+        dfs(root.right);
+    };
+    dfs(root);
+    return result;
+};
+```
+
+```javascript
+var postorderTraversal = function(root) {
+    const result = [];
+    const dfs = root => {
+        if (!root) return;
+        dfs(root.left);
+        dfs(root.right);
+        result.push(root.val);
+    };
+    dfs(root);
+    return result;
+};
+```
+
+```javascript
+// 层次看迭代，学会一个模板我要打10个！
+```
+
+### 迭代法
+```javascript
+var preorderTraversal = function(root) {
+    const result = [];
+    const stack = [];
+    if (root) stack.push(root);
+    while(stack.length) {
+        const node = stack.pop();
+        if (!node) {
+            result.push(stack.pop().val);
+            continue;
+        }
+        if (node.right) stack.push(node.right); // 右
+        if (node.left) stack.push(node.left); // 左
+        stack.push(node); // 中
+        stack.push(null); // 标志栈中第二个节点可以push进结果数组了
+  
+    };
+    return result;
+};
+```
+
+```javascript
+var inorderTraversal = function(root) {
+    const result = [];
+    const stack = [];
+    if (root) stack.push(root);
+    while(stack.length) {
+        const node = stack.pop();
+        if (!node) {
+            result.push(stack.pop().val);
+            continue; 
+        }
+        if (node.right) stack.push(node.right); // 右
+        stack.push(node); // 中
+        stack.push(null);
+        if (node.left) stack.push(node.left); // 左
+    };
+    return result;
+};
+```
+
+```javascript
+var postorderTraversal = function(root) {
+    const result = [];
+    const stack = [];
+    if (root) stack.push(root);
+    while(stack.length) {
+        const node = stack.pop();
+        if (!node) {
+            result.push(stack.pop().val);
+            continue;
+        }
+        stack.push(node); // 中
+        stack.push(null);
+        if (node.right) stack.push(node.right); // 右
+        if (node.left) stack.push(node.left); // 左
+    };
+    return result; 
+};
+```
+
+```javascript
+var levelOrder = function(root) {
+    const result = [];
+    const queue = [];
+    if (root) queue.push(root);
+    while(queue.length) {
+        const cur = [];
+        const len = queue.length;
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            cur.push(node.val);
+            node.left && queue.push(node.left);
+            node.right && queue.push(node.right);
+        }
+        result.push(cur);
+    };
+    return result;
+};
+```
+
+## 二叉树的判断（是否相同、是否对称、是否子树、是否平衡）
+### 是否相同
+```javascript
+var isSameTree = function(p, q) {
+    if(p == null && q == null) 
+        return true;
+    if(p == null || q == null) 
+        return false;
+    if(p.val != q.val) 
+        return false;
+    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+};
+```
+
+```javascript
+// 迭代法
+var isSameTree = function(p, q) {
+    if (p === null && q === null) return true;
+
+    const queue = [];
+    queue.push(p);
+    queue.push(q);
+
+    while(queue.length) {
+        const left = queue.shift();
+        const right = queue.shift();
+        if (left === null && right === null) continue;
+        if (left === null || right === null || left.val !== right.val) return false;
+
+        queue.push(left.left);
+        queue.push(right.left);
+        queue.push(left.right);
+        queue.push(right.right);
+
+    };
+    return true;
+}
+```
+
+### 是否对称
+```javascript
+var isSymmetric = function(root) {
+    if (!root) return true;
+    return mirrorTree(root.left, root.right);
+};
+function mirrorTree(left, right) {
+    if (left === null && right !== null || left !== null && right === null) return false;
+    if (left === null && right === null) return true;
+    if (left.val !== right.val) return false;
+    // 到这里就相等了，此时要判断子节点
+    let outside = mirrorTree(left.left, right.right);
+    let inside = mirrorTree(left.right, right.left);
+    return outside && inside;
+}
+```
+
+```javascript
+// 迭代法--队列实现
+var isSymmetric = function (root) {
+    if (!root) return true;
+    const queue = [];
+    queue.push(root.left);
+    queue.push(root.right);
+    while(queue.length) {
+        const left = queue.shift();
+        const right = queue.shift();
+        if (left === null && right === null) {
+            continue;
+        };
+        if (left === null || right === null || left.val !== right.val) return false;
+        queue.push(left.left);
+        queue.push(right.right);
+        queue.push(left.right);
+        queue.push(right.left);
+    };
+    return true;
+}
+
+// 迭代法--栈实现（就是push进数组的顺序变化了）
+var isSymmetric = function (root) {
+    if (!root) return true;
+    const stack = [];
+    stack.push(root.left);
+    stack.push(root.right);
+    while(stack.length) {
+        const left = stack.pop();
+        const right = stack.pop();
+        if (left === null && right === null) {
+            continue;
+        };
+        if (left === null || right === null || left.val !== right.val) return false;
+        stack.push(left.right);
+        stack.push(right.left);
+        stack.push(right.right);
+        stack.push(left.left);
+    };
+    return true;
+}
+```
+
+### 是否子树
+
+### 是否平衡
+```javascript
+var isBalanced = function(root) {
+    const getDepth = root => {
+        if (!root) return 0;
+        let leftDepth = getDepth(root.left);
+        if (leftDepth === -1) return -1;
+        let rightDepth = getDepth(root.right);
+        if (rightDepth === -1) return -1;
+        if (Math.abs(leftDepth - rightDepth) > 1) {
+            return -1;
+        }else {
+            return 1 + Math.max(leftDepth, rightDepth);
+        }
+    }
+    return !(getDepth(root) === -1);
+};
+```
+
+
+## 二叉树的操作（翻转、求最大最小深度、求节点个数、求所有路径、求左叶子之和、找树左下角值、根据遍历顺序构造）
+
+### 翻转
+```javascript
+var invertTree = function(root) {
+    const queue = [];
+    if (root) queue.push(root);
+    while(queue.length) {
+        const len = queue.length;
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            reverseTree(node, node.left, node.right);
+            node.left && queue.push(node.left);
+            node.right && queue.push(node.right);
+        }
+    };
+    return root;
+};
+function reverseTree(node, left, right) {
+    let temp = left;
+    left = right;
+    right = temp;
+    node.left = left;
+    node.right = right;
+}
+```
+### 最大深度
+```javascript
+var maxDepth = function(root) {
+    const result = [];
+    const queue = [];
+    if (root) queue.push(root);
+    while(queue.length) {
+        const len = queue.length;
+        const cur = [];
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            cur.push(node.val);
+            node.left && queue.push(node.left);
+            node.right && queue.push(node.right);
+        };
+        result.push(cur);
+    };
+    return result.length;
+};
+```
+
+### 最小深度
+```javascript
+var minDepth = function(root) {
+    if (!root) return 0;
+    const queue = [];
+    queue.push(root);
+    let depth = 1;
+    while(queue.length) {
+        const len = queue.length;
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            if (!node.left && !node.right) { //不存在子节点则可以返回深度了--keyCode
+                return depth;
+            }
+            node.left && queue.push(node.left);
+            node.right && queue.push(node.right);
+        };
+        // 当前层次的节点 都有子节点，高度++--keyCode
+        depth++;
+    };
+    return depth;
+};
+```
+
+### 求节点数量
+```javascript
+var countNodes = root => {
+    if (!root) return 0;
+    const queue = [];
+    queue.push(root);
+    let result = 0;
+    while(queue.length) {
+        const len = queue.length;
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            result++;
+            node.left && queue.push(node.left);
+            node.right && queue.push(node.right);
+        };
+    };
+    return result;
+}
+
+// 利用完全二叉树性质递归遍历
+var countNodes = root => {
+    if (!root) return 0;
+    let left = root.left;
+    let right = root.right;
+    let leftDepth = 0;
+    let rightDepth = 0;
+    while(left) {
+        left = left.left;
+        leftDepth++;
+    }
+    while(right) {
+        right = right.right;
+        rightDepth++;
+    };
+    if (leftDepth === rightDepth) {
+        return Math.pow(2, leftDepth + 1) - 1;
+    };
+    return countNodes(root.left) + countNodes(root.right) + 1;
+}
+```
+
+### 求所有路径
+```javascript
+var binaryTreePaths = function(root) {
+    const res = [];
+    const getRoad = (node, curPath) => {
+        if (!node.left && !node.right) {
+            curPath += node.val;
+            res.push(curPath);
+            return;
+        }
+        curPath += node.val + '->';
+        node.left && getRoad(node.left, curPath);
+        node.right && getRoad(node.right, curPath);
+    };
+    getRoad(root, '');
+    return res;
+};
+```
+```javascript
+var binaryTreePaths = function(root) {
+    if (!root) return [];
+    const stack = [root];
+    const res = [];
+    const path = [''];
+    while(stack.length) {
+        const node = stack.pop();
+        let curPath = path.pop();
+        if (!node.left && !node.right) {
+            curPath += node.val;
+            res.push(curPath);
+            continue;
+        };
+        curPath += node.val + '->';
+        node.right && stack.push(node.right) && path.push(curPath);
+        node.left && stack.push(node.left) && path.push(curPath);
+    }
+    return res;
+};
+```
+
+### 求左叶子之和
+```javascript
+var sumOfLeftLeaves = function(root) {
+  const getLeftVal = node => {
+      if (!node) return 0;
+
+      let sum = 0;
+      let left = getLeftVal(node.left);
+      let right = getLeftVal(node.right);
+
+      let midVal = 0;
+      // 这里midVal就是叶子节点，为什么是这样算呢？它把计算时刻提到 “遍历到中间节点”时刻
+      if (node.left && !node.left.left && !node.left.right) {
+          midVal = node.left.val;
+      };
+      sum = left + midVal + right;
+      return sum;
+  }
+  return getLeftVal(root);
+};
+```
+```javascript
+var sumOfLeftLeaves = function(root) {
+    if (!root) return null;
+  
+    let res = 0;
+    const stack = [];
+    stack.push(root);
+  
+    while (stack.length) {
+        const node = stack.pop();
+        if (node.left && !node.left.left && !node.left.right) {
+            res += node.left.val;
+        };
+        node.left && stack.push(node.left);
+        node.right && stack.push(node.right);
+    };
+    return res;
+};
+```
+
+### 找树左下角值
+```javascript
+var findBottomLeftValue = function(root) {
+    if (!root) return;
+    const res = [];
+    const queue = [];
+    queue.push(root);
+    while(queue.length) {
+        const len = queue.length;
+        const cur = [];
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            cur.push(node.val);
+            node.left && queue.push(node.left);
+            node.right && queue.push(node.right);
+        };
+        res.push(cur);
+    };
+    return res[res.length - 1][0];
+};
+```
+
+### 路径总和
+```javascript
+var hasPathSum = function(root, targetSum) {
+    const traverse = (node, cnt) => {
+        if (cnt === 0 && !node.left && !node.right) return true;
+        if (!node.left && !node.right) return false;
+        if (node.left && traverse(node.left, cnt - node.left.val)) return true;
+        if (node.right && traverse(node.right, cnt - node.right.val)) return true;
+        return false;
+    };
+    if (!root) return false;
+    return traverse(root, targetSum - root.val);
+};
+```
+```javascript
+var hasPathSum = function (root, targetSum) {
+    if (!root) return false;
+
+    const queue = [];
+    const res = [];
+    queue.push(root);
+    res.push(targetSum);
+
+    while (queue.length) {
+        const node = queue.shift();
+        const val = res.shift();
+        let reduceVal = val - node.val;
+
+        if (reduceVal === 0 && !node.left && !node.right) return true;
+        node.left && queue.push(node.left) && res.push(reduceVal);
+        node.right && queue.push(node.right) && res.push(reduceVal);
+    };
+    return false;
+}
+```
+
+
+### 根据前序遍历&中序遍历构造二叉树
+```javascript
+var buildTree = function(preorder, inorder) {
+    if (!preorder.length) return null;
+    const rootVal = preorder.shift();
+    const rootIndex = inorder.indexOf(rootVal);
+    let root = new TreeNode(rootVal);
+    root.left = buildTree(preorder.slice(0, rootIndex), inorder.slice(0, rootIndex));
+    root.right = buildTree(preorder.slice(rootIndex), inorder.slice(rootIndex + 1));
+    return root;
+};
+```
+
+### 根据中序遍历&后序遍历构造二叉树
+```javascript
+var buildTree = function(inorder, postorder) {
+    if (!inorder.length) return null;
+    const rootVal = postorder.pop(); // 后续遍历最后一个为根节点
+    const rootIndex = inorder.indexOf(rootVal);
+    let root = new TreeNode(rootVal); // 构造二叉树的根节点
+    root.left = buildTree(inorder.slice(0, rootIndex), postorder.slice(0, rootIndex));
+    root.right = buildTree(inorder.slice(rootIndex + 1), postorder.slice(rootIndex)); // 此时postorder已经pop了根节点
+    return root;
+};
+```
+
+### 求最大二叉树
+![20210204154534796.png](https://cdn.nlark.com/yuque/0/2023/png/26762664/1681046953075-f725a823-cd51-4363-a773-49e43a920bf7.png#averageHue=%23f2f2f2&clientId=ud184a7a1-e85f-4&from=drop&id=u863c1acd&originHeight=432&originWidth=928&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=26483&status=done&style=none&taskId=ude794513-8682-4e9c-bcb5-1d24aff2ed0&title=)
+```javascript
+var constructMaximumBinaryTree = function(nums) {
+    if (!nums.length) return null;
+    let rootVal = Math.max(...nums);
+    let rootIndex = nums.indexOf(rootVal);
+    let root = new TreeNode(rootVal);
+    root.left = constructMaximumBinaryTree(nums.slice(0, rootIndex));
+    root.right = constructMaximumBinaryTree(nums.slice(rootIndex + 1));
+    return root;
+};
+```
+
+### 合并二叉树
+```javascript
+var mergeTrees = function(root1, root2) {
+    const mergeTree = (root1, root2) => {
+        // root1为null，则返回root2
+        if (!root1) return root2;
+        if (!root2) return root1;
+
+        root1.val += root2.val;
+        root1.left = mergeTree(root1.left, root2.left);
+        root1.right = mergeTree(root1.right, root2.right);
+        return root1;
+    };
+    return mergeTree(root1, root2);
+};
+```
+```javascript
+var mergeTrees = function(root1, root2) {
+    if (!root1) return root2;
+    if (!root2) return root1;
+    const queue = [];
+    queue.push(root1);
+    queue.push(root2);
+    while (queue.length) {
+        const node1 = queue.shift();
+        const node2 = queue.shift();
+        node1.val += node2.val;
+        if (node1.left && node2.left) {
+            queue.push(node1.left, node2.left);
+        };
+        if (node1.right && node2.right) {
+            queue.push(node1.right, node2.right);
+        };
+        if (!node1.left && node2.left) node1.left = node2.left;
+        if (!node1.right && node2.right) node1.right = node2.right;
+    }
+    return root1;
+};
+```
+
+## 二叉搜索树的操作
+二叉搜索树有特性：
+
+- 左节点的值小于中间节点
+- 右节点的值大于中间节点
+
+这给遍历带来很大程度的便利。
+
+### 搜索
+![image.png](https://cdn.nlark.com/yuque/0/2023/png/26762664/1681051290751-67bef4a7-06ed-45a9-b2bb-ccc1c11e5022.png#averageHue=%23f6f6f6&clientId=ud184a7a1-e85f-4&from=paste&height=567&id=u4369b1dc&originHeight=709&originWidth=995&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=34069&status=done&style=none&taskId=u9d3b9639-d96f-48d5-8fed-5b7118c58ea&title=&width=796)
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} val
+ * @return {TreeNode}
+ */
+// 递归法
+var searchBST = function(root, val) {
+    if (!root || root.val === val) return root;
+    if (root.val > val) {
+        return searchBST(root.left, val);
+    };
+    if (root.val < val) {
+        return searchBST(root.right, val);
+    };
+    return null;
+};
+```
+```javascript
+var searchBST = (root, val) => {
+    if (!root) return null;
+    const queue = [root];
+    while (queue.length) {
+        const node = queue.shift();
+        if (!node) continue;
+
+        if (node.val > val) {
+            queue.push(node.left);
+        }else if (node.val < val) {
+            queue.push(node.right);
+        }else {
+            return node;
+        }
+    };
+    return null;
+}
+```
+
+
+### 验证是否二叉搜索树
+关键点：判断是否升序
+```javascript
+var isValidBST = function(root) {
+    const res = [];
+    const midTraverse = root => {
+        if (!root) return;
+        root.left && midTraverse(root.left);
+        res.push(root.val);
+        root.right && midTraverse(root.right);
+    };
+    midTraverse(root);
+    for (let i = 0; i < res.length - 1; i++) {
+        if (res[i] >= res[i + 1]) return false;
+    };
+    return true;
+};
+```
+
+### [二叉搜索树的最小绝对差](https://leetcode.cn/problems/minimum-absolute-difference-in-bst/)
+给你一个二叉搜索树的根节点 root ，返回 树中任意两不同节点值之间的最小差值 。
+差值是一个正数，其数值等于两值之差的绝对值。
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var getMinimumDifference = function(root) {
+    let preNode = null;
+    let res = Infinity;
+
+    // 中序遍历
+    const inorder = node => {
+        if (!node) return;
+        inorder(node.left);
+        if (preNode) res = Math.min(res, node.val - preNode.val);
+        // 记录下一个节点
+        preNode = node;
+        inorder(node.right);
+    }
+    inorder(root);
+    return res;
+};
+```
+```javascript
+var getMinimumDifference = function(root) {
+    const res = [];
+    const inorder = node => {
+        if (node) {
+            inorder(node.left);
+            res.push(node.val);
+            inorder(node.right);
+        }
+    };
+    inorder(root);
+    let diff = Infinity;
+    for (let i = 0; i < res.length - 1; i++) {
+        if (diff > res[i + 1] - res[i]) {
+            diff = res[i + 1] - res[i];
+        }
+    };
+    return diff;
+};
+```
+
+### [501. 二叉搜索树中的众数](https://leetcode.cn/problems/find-mode-in-binary-search-tree/)
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+
+// 使用额外空间
+var findMode = function(root) {
+    let map = new Map();
+
+    // 中序遍历且构造好map
+    const inorder = node => {
+        if (!node) return;
+        inorder(node.left);
+        map.set(node.val, map.has(node.val)? map.get(node.val) + 1 : 1);
+        inorder(node.right);
+    };
+    inorder(root);
+
+    // map -> { val: 次数 }
+    let res = [];
+    let mode = map.get(root.val);
+    for (let [key, val] of map) {
+        if (val === mode) {
+            res.push(key);
+        }else if (val > mode) {
+            res = [];
+            mode = val;
+            res.push(key);
+        }
+    };
+    return res;
+};
+```
+```javascript
+var findMode = function (root) {
+    let count = 0, maxCount = 1;
+    let res = [], pre = root;
+    const inorder = node => {
+        if (!node) return;
+        inorder(node.left);
+        // 单层递归
+        if (node.val === pre.val) {
+            count++;
+        }else {
+            count = 1;
+        }
+        pre = node; // keyCode
+
+        if (count === maxCount) {
+            res.push(node.val);
+        }else if (count > maxCount){
+            res = []; // keyCode
+            res.push(node.val); // keyCode
+            maxCount = count; // keyCode
+        }
+        inorder(node.right);
+    };
+    inorder(root);
+    return res;
+}
+```
+
+
+### [236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+
+// 后序遍历回溯
+var lowestCommonAncestor = function(root, p, q) {
+    const backOrder = (root, p, q) => {
+        // 递归停止的条件
+        if (root === null || root === p || root === q) {
+            return root;
+        }
+        // 左节点进入递归
+        let left = backOrder(root.left, p, q);
+        // 右节点进入递归
+        let right = backOrder(root.right, p, q);
+
+        // 找到公共祖先
+        if (left && right) {
+            return root;
+        }
+        // 左边是null返回右边，否则返回左边
+        if (!left) return right;
+        return left;
+    };
+    return backOrder(root, p, q);
+};
+```
+
+### [235. 二叉搜索树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+```javascript
+var lowestCommonAncestor = function(root, p, q) {
+    while (root) {
+        if (!root) return;
+        if (root.val < p.val && root.val < q.val) {
+            root = root.right;
+        }else if (root.val > q.val && root.val > p.val) {
+            root = root.left;
+        }else {
+            return root;
+        }
+    };
+    return null;
+};
+```
+
+### [701. 二叉搜索树中的插入操作](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
+> 给定二叉搜索树（BST）的根节点 root 和要插入树中的值 value ，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据 保证 ，新值和原始二叉搜索树中的任意节点值都不同。
+> 注意，可能存在多种有效的插入方式，只要树在插入后仍保持为二叉搜索树即可。 你可以返回 任意有效的结果 。
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} val
+ * @return {TreeNode}
+ */
+
+// 无返回值的递归
+var insertIntoBST = function(root, val) {
+    const setInOrder = (root, val) => {
+        if (!root) {
+            // 当遇到null节点，则插入位置找到了
+            let node = new TreeNode(val);
+            return node;
+        }
+        // 根据二叉搜索树的特性，大于中间节点的插入右边，小于的插入左边
+        if (val > root.val) {
+            root.right = setInOrder(root.right, val);
+        }
+        if (val < root.val) {
+            root.left = setInOrder(root.left, val);
+        }
+        // 这里return出去后，root.left | root.right 才能捕获到节点
+        return root;
+    };
+    return setInOrder(root, val);
+};
+```
+```javascript
+// 有返回值的递归
+var insertIntoBST = function (root, val) {
+    if (!root) return new TreeNode(val);
+    // if (!root) root = new TreeNode(val);
+
+    let parent = null;
+    const preOrder = (cur, val)  => {
+        if (!cur) {
+            let node = new TreeNode(val);
+            if (parent.val > val) {
+                parent.left = node;
+            }else {
+                parent.right = node;
+            }
+            return;
+        }
+        parent = cur;
+        if (cur.val > val) {
+            preOrder(cur.left, val);
+        }
+        if (cur.val < val) {
+            preOrder(cur.right, val);
+        }
+    }
+    preOrder(root, val);
+    return root;
+}
+```
+```javascript
+// 迭代法 -- 遍历到插入位置后插入
+var insertIntoBST = function (root, val) {
+    if (!root) {
+        root = new TreeNode(val)
+    }else {
+        let parent = null;
+        let cur = root; // 这里再用一个指针指向root而不是直接用root去遍历更新，使得最后返回root不会空
+        while(cur) {
+            parent = cur;
+            if (val > cur.val) {
+                cur = cur.right;
+            }else if (val < cur.val) {
+                cur = cur.left;
+            }
+        }
+        // 此时找到合适的位置了
+        let node = new TreeNode(val);
+        if (parent.val > val) {
+            parent.left = node;
+        }else {
+            parent.right = node;
+        }
+    }
+    return root;
+}
+```
+
+### [450. 删除二叉搜索树中的节点](https://leetcode.cn/problems/delete-node-in-a-bst/)
+```javascript
+var deleteNode = function(root, key) {
+    if (!root) return null;
+    if (key > root.val) {
+        root.right = deleteNode(root.right, key);
+        return root;
+    }
+    if (key < root.val) {
+        root.left = deleteNode(root.left, key);
+        return root;
+    }
+    // key === root.val
+
+    // 左右节点为空或者一个为空的场景
+    if (!root.left && !root.right) return null;
+    if (root.left && !root.right) return root.left;
+    if (!root.left && root.right) return root.right;
+
+    // 左右节点都不为空的场景
+    let node = root.right;
+    while (node.left) {
+        node = node.left;
+    }
+    // 此时node是待删除结点的右子树中最小的节点--下面是转换操作，keyCode
+
+    // 待删除节点值换成最小节点值
+    root.val = node.val;
+    // 去掉最小节点
+    root.right = deleteNode(root.right, node.val);
+    // 上述两步中待删除的左节点不用动
+    
+    return root;
+};
+```
+
+### [669. 修剪二叉搜索树](https://leetcode.cn/problems/trim-a-binary-search-tree/)
+```javascript
+// 递归法
+var trimBST = function (root, low, high) {
+    if (!root) return null;
+    if (root.val < low) {
+        let right = trimBST(root.right, low, high);
+        return right;
+    }
+    if (root.val > high) {
+        let left = trimBST(root.left, low, high);
+        return left;
+    }
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    return root;
+}
+```
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} low
+ * @param {number} high
+ * @return {TreeNode}
+ */
+var trimBST = function(root, low, high) {
+    if (!root) return null;
+    // 删除节点，什么时候删除？如何删除？
+    // 到达能删除的地方
+    while (root && (root.val < low || root.val > high)) {
+        if (root.val < low) {
+            root = root.right;
+        }else {
+            root = root.left;
+        }
+    }
+    let cur = root; // 保存一下root，让cur去前面探查删除节点
+
+    // 删除操作-- 从左子树开始，探查小于low的
+    while (cur) {
+        while(cur.left && cur.left.val < low) {
+            cur.left = cur.left.right; // 将左节点替换为左节点的右子树，因为它左边部分比中间小，中间不考虑自然左子树不用考虑
+        }
+        cur = cur.left;
+    }
+
+    cur = root // 还原
+
+    // 从右子树开始，探查大于high的
+    while (cur) {
+        while(cur.right && cur.right.val > high) {
+            cur.right = cur.right.left; // 同上
+        }
+        cur = cur.right;
+    }
+    return root;
+};
+```
+
+
+### [108. 将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
+```javascript
+// 递归法
+var sortedArrayToBST = (nums) => {
+    const buildTree = (arr, left, right) => {
+        if (left > right) return null;
+        let mid = Math.floor(left + (right - left) / 2); // 注意js里处理数字常用到Math对象里面的方法
+        let root = new TreeNode(arr[mid]);
+        root.left = buildTree(arr, left, mid - 1);
+        root.right = buildTree(arr, mid + 1, right);
+        return root;
+    };
+    return buildTree(nums, 0, nums.length - 1);
+}
+```
+
+### [538. 把二叉搜索树转换为累加树](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
+```javascript
+var convertBST = function(root) {
+    let pre = null;
+    const sumTree = (node) => {
+        if (!node) return;
+        node.right && sumTree(node.right);
+        
+        if (pre) {
+            node.val += pre.val;
+        }
+
+        pre = node;
+        node.left && sumTree(node.left);
+    };
+    sumTree(root);
+    return root;
+};
+```
+
+# 回溯思想
+
+### [77. 组合](https://leetcode.cn/problems/combinations/)
+给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+你可以按 **任何顺序** 返回答案。
+```javascript
+let path = []; // 存放路径
+let result = []; // 存放结果集
+const combine = (n, k) => {
+    result = [];
+    combineFind(n, k ,1); // 从 1 开始
+    return result;
+}
+const combineFind = (n, k, startIndex) => {
+    if (path.length === k) { // 满足要求推进结果集
+        result.push([...path]);
+        return;
+    }
+    for (let i = startIndex; i <= n - (k - path.length) + 1; i++) {
+        path.push(i); // 深度往下加
+        combineFind(n, k, i + 1);
+        path.pop(); // 回溯，深度往上减
+    }
+}
+```
+
+### [216. 组合总和 III](https://leetcode.cn/problems/combination-sum-iii/)
+```javascript
+/**
+ * @param {number} k
+ * @param {number} n
+ * @return {number[][]}
+ */
+var combinationSum3 = function(k, n) {
+    let result = [];
+    let path = [];
+    let sum = 0;
+    const dfs = (path, index) => {
+        if (sum > n) return;
+        if (path.length === k) {
+            if (sum === n) {
+                result.push([...path]);
+                return;
+            }
+        }
+        for (let i = index; i <= 9 - (k - path.length) + 1; i++) {
+            path.push(i);
+            sum += i;
+            dfs(path, ++index);
+            sum -= i;
+            path.pop();
+        }
+    }
+    dfs(path, 1);
+    return result;
+};
+```
+
+### [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+![image.png](https://cdn.nlark.com/yuque/0/2023/png/26762664/1681830759309-4b65b952-a515-42ba-93ee-9327f3c15e19.png#averageHue=%23e2e1e1&clientId=u240e7b63-004f-4&from=paste&height=339&id=u793cf607&originHeight=424&originWidth=795&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=87149&status=done&style=none&taskId=u20c1673f-d61f-4eb4-a1a0-4ce07b7ff04&title=&width=636)
+```javascript
+var letterCombinations = digits => {
+    let k = digits.length; // 记录按了几个按钮
+    let mapArr = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"]; // 对应数字->数组索引逻辑一致去匹配,比如号码 2 对应的映射即数组第二个
+    if (!k) return [];
+    if (k === 1) return mapArr[digits].split(""); // digits即为索引，比如输入"2" => ['a','b','c']
+    const res = [];// 存储结果和记录path
+    let path = [];
+    dfs(digits, k, 0);
+    return res;
+
+    function dfs (digits, k, n) {
+        if (path.length === k) {
+            res.push(path.join(""));
+            return;
+        }
+        for (const str of mapArr[digits[n]]) {
+            path.push(str);
+            dfs(digits, k, n + 1);
+            path.pop(); // 回溯
+        }
+    }
+}
+```
+
+
+### [39. 组合总和](https://leetcode.cn/problems/combination-sum/)
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+
+// 其实相比77题，就是每个数支持重复使用
+// 本题的解法: [1, 2, 3], target = 10, 一开始会先走10个1，接着退出一些1来用2弥补等等，这个过程用“if (val > target - sum) break; ”剪枝优化下
+const combinationSum = function(candidates, target) {
+    candidates.sort((a, b) => a - b); // 会改变原数组
+    if (!candidates.length || candidates[0] > target) return [];
+    const res = [], path = [];
+    findCombination(candidates, 0, 0);
+    function findCombination(candidates, index, sum) {
+        if (sum === target) {
+            res.push([...path]);
+            return;
+        }
+        for (let i = index; i < candidates.length; i++) {
+            const val = candidates[i];
+            if (val > target - sum) break;
+            sum += val;
+            path.push(val);
+            findCombination(candidates, i, sum); // 此时 i 原封不动传入
+            sum -= val; // 回溯
+            path.pop(); // 回溯
+        }
+    }
+    return res;
+};
+```
+
+
+### [40. 组合总和 II](https://leetcode.cn/problems/combination-sum-ii/)
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+const combinationSum2 = function(candidates, target) {
+    const res = [], path = [], sum = 0, len = candidates.length;
+    candidates.sort((a, b) => a - b);
+    getCombinationSum(0, sum);
+    function getCombinationSum(index, sum) {
+        if (sum === target) {
+            res.push([...path]);
+            return;
+        }
+        for (let i = index; i < len; i++) {
+            const val = candidates[i];
+            if (i > index && candidates[i - 1] === val) continue; // 当 i > index 说明应该换为相邻节点且根据题意要求相邻不能重复
+            if(val > target - sum) break;
+            sum += val;
+            path.push(val);
+            getCombinationSum(i + 1, sum);
+            sum -= val; // 这里就是上面continue出来后回溯
+            path.pop();
+        }
+    };
+    return res;
+};
+```
+
+
+
+
+# 各大排序算法以及时间和空间复杂度
+## 冒泡排序[ O(n^2)，O(1) ]
+```javascript
+function bubbleSort(arr) {
+  const len = arr.length;
+  const res = JSON.parse(JSON.stringify(arr));
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len - i - 1; j++) { // 大的都冒泡到后面去了，len- i - 1是减少不必要的循环次数
+      if (res[j + 1] < res[j]) {
+        [res[j + 1], res[j]] = [res[j], res[j + 1]];
+      }
+    }
+  }
+  return res;
+}
+const arr = [1, 2, -1, 0.5, -100, 200, -1000, 300];
+const res = bubbleSort(arr);
+console.log('未排完序的', arr);
+console.log('排完序的', res);
+```
+
+## 插入排序[ O(n^2)，O(1) ]
+```javascript
+function insertSort(arr) {
+  const len = arr.length;
+  const res = JSON.parse(JSON.stringify(arr)); 
+  for (let i = 0; i < len; i++) { // 定义外层循环次数，用处在于每个数都被拿出来了
+    for (let j = i; j > 0; j--) { // 拿出来的这个数要开始从自己位置到开头比对下，需要交换就change
+      if (res[j] < res[j - 1]) {
+        [res[j], res[j - 1]] = [res[j - 1], res[j]];
+      }
+    }
+  };
+  return res;
+}
+const arr = [1, 2, -1, 0.5, -100, 200, -1000, 300];
+const res = insertSort(arr);
+console.log('未排完序的', arr);
+console.log('排完序的', res);
+```
+## 快速排序[ O(nlogn)，O(nlogn) ]
+```javascript
+function quickSort(arr, left, right) {
+  left = typeof left !== 'number'? 0 : left;
+  right = typeof right !== 'number'? arr.length - 1 : right;
+  let selectIndex = undefined;
+  if (left < right) {
+    selectIndex = getSelectIndex(arr, left, right);
+    quickSort(arr, left, selectIndex);
+    quickSort(arr, selectIndex + 1, right);
+  }
+  return arr;
+}
+function getSelectIndex(arr, left, right) {
+  let pivot = left;
+  let index = pivot + 1;
+  for (let i = index; i <= right; i++) {
+    if (arr[i] < arr[pivot]) {
+      [arr[i], arr[index]] = [arr[index], arr[i]];
+      index++;
+    }
+  }
+  [arr[index - 1], arr[pivot]] = [arr[pivot], arr[index - 1]];
+  return index - 1;
+}
+const arr = [1, 2, -1, 0.5, -100, 200, -1000, 300];
+const res = quickSort(JSON.parse(JSON.stringify(arr)));
+console.log('未排完序的', arr);
+console.log('排完序的', res);
+```
+## 选择排序[ O(n^2)，O(1) ]
+```javascript
+function selectSort(arr) {
+  const res = JSON.parse(JSON.stringify(arr)); 
+  const len = res.length;
+  if (!len) return;
+  for (let i = 0; i < len; i++) {
+    let min = i;
+    for (let j = i; j < len; j++) {
+      if (res[j] < res[min]) {
+        min = j;
+      }
+    }
+    if (min !== i) {
+      [res[min], res[i]] = [res[i], res[min]];
+    }
+  }
+  return res;
+}
+const arr = [1, 2, -1, 0.5, -100, 200, -1000, 300];
+const res = selectSort(arr);
+console.log('未排完序的', arr);
+console.log('排完序的', res);
+```
