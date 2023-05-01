@@ -1863,6 +1863,38 @@ function diffElement(hasVal, newVal) {
 }
 ```
 
+### [491. 递增子序列](https://leetcode.cn/problems/non-decreasing-subsequences/)
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+
+const findSubsequences = (nums) => {
+    const res = [], path = [], len = nums.length;
+    getSubsequences(0);
+    return res;
+    function getSubsequences(index) {
+        if (path.length > 1) {
+            res.push([...path]);
+        }
+        let map = new Map(); // 记录同一层是否使用相同数字
+        for (let i = index; i < len; i++) {
+            if (path.length > 0 && nums[i] < path[path.length - 1] || map.has(nums[i])) {
+                continue;
+            }
+            map.set(nums[i], 1);
+            path.push(nums[i]);
+            getSubsequences(i + 1);
+            path.pop();
+        }
+    }
+}
+```
+
+
+
+
 
 
 
