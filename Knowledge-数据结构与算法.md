@@ -1898,7 +1898,7 @@ const findSubsequences = (nums) => {
  * @param {number[]} nums
  * @return {number[][]}
  */
-// 排列和组合区别在于是否有序，[1, 2] 和 [2, 1]为两个集合，这使得取值推进 path 时，核心是判断同一 path 是否已经使用元
+// 排列和组合区别在于是否有序，[1, 2] 和 [2, 1]为两个集合，这使得取值推进 path 时，核心是判断同一 path 是否已经使用元素
 const permute = (nums) => {
     const res = [], path = [], len = nums.length;
     const hasUse = new Array(len).fill(0); // nums[1, 2, 3] -> hasUse[0, 0 ,0]  0: 没使用 1: 使用
