@@ -2130,6 +2130,55 @@ const solveSudoku = (board) => {
 };
 ```
 
+### [455. 分发饼干](https://leetcode.cn/problems/assign-cookies/)
+```javascript
+/**
+ * @param {number[]} g
+ * @param {number[]} s
+ * @return {number}
+ */
+const findContentChildren = (g, s) => {
+    let gI = g.length - 1, sJ = s.length - 1;
+    // 排序使得比较有意义
+    g.sort( (a, b) => a - b);
+    s.sort( (a, b) => a - b);
+    let res = 0;
+    while (gI >= 0 && sJ >= 0) {
+        if (g[gI] <= s[sJ]) {
+            res++;
+            gI--;
+            sJ--;
+            continue;
+        }
+        gI--;
+    }
+    return res;
+}
+```
+
+```TypeScript
+const findContentChildren = (g: number[], s: number[]) : number => {
+    let gI: number = g.length - 1, sJ: number = s.length - 1;
+    // 排序使得比较有意义
+    g.sort( (a, b) => a - b);
+    s.sort( (a, b) => a - b);
+    let res: number = 0;
+    while (gI >= 0 && sJ >= 0) {
+        if (g[gI] <= s[sJ]) {
+            res++;
+            gI--;
+            sJ--;
+            continue;
+        }
+        gI--;
+    }
+    return res;
+}
+```
+
+
+
+
 
 
 
