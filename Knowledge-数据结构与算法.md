@@ -2198,6 +2198,24 @@ function wiggleMaxLength(nums: number[]): number {
 }
 ```
 
+### [53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/)
+```typescript
+function maxSubArray(nums: number[]): number {
+    let res: number = -Infinity;
+    let count: number = 0;
+    for (let i = 0; i < nums.length; i++) {
+        count += nums[i];
+        if (count > res) {
+            res = count;
+        }
+        // 重置
+        if (count < 0) {
+            count = 0;
+        }
+    }
+    return res;
+};
+```
 
 
 
