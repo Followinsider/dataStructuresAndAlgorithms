@@ -2130,7 +2130,12 @@ const solveSudoku = (board) => {
 };
 ```
 
+
+
+# 贪心思想
+
 ### [455. 分发饼干](https://leetcode.cn/problems/assign-cookies/)
+
 ```javascript
 /**
  * @param {number[]} g
@@ -2176,6 +2181,22 @@ const findContentChildren = (g: number[], s: number[]) : number => {
 }
 ```
 
+### [376. 摆动序列](https://leetcode.cn/problems/assign-cookies/)
+```typescript
+function wiggleMaxLength(nums: number[]): number {
+    let res: number = 1;
+    let preDiff: number = 0, curDiff: number = 0;
+    for (let i = 0; i < nums.length; i++){
+        curDiff = nums[i + 1] - nums[i];
+        // 交替部分-- keyCode
+        if ((curDiff > 0 && preDiff <= 0) || (curDiff < 0 && preDiff >= 0)) {
+            res++;
+            preDiff = curDiff;
+        }
+    }
+    return res;
+}
+```
 
 
 
