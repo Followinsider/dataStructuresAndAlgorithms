@@ -2335,6 +2335,45 @@ function candy(ratings: number[]): number {
 ```
 
 
+### [860. 柠檬水找零](https://leetcode.cn/problems/lemonade-change/)
+```typescript
+function lemonadeChange(bills: number[]): boolean {
+    let hasMoney: money = {
+        five: 0,
+        ten: 0,
+        twenty: 0
+    };
+    for (let i: number = 0; i < bills.length; i++) {
+        switch(bills[i]) {
+            case 5:
+                hasMoney.five++;
+                break;
+            case 10:
+                hasMoney.ten++;
+                if (hasMoney.five < 1) return false;
+                hasMoney.five--;
+                break;
+            case 20:
+                hasMoney.twenty++;  // 5:0 10:0, 20:1、
+                if (hasMoney.ten >= 1 && hasMoney.five >= 1) {
+                    hasMoney.five--;
+                    hasMoney.ten--;
+                }else if (hasMoney.five >= 3) {
+                    hasMoney.five = hasMoney.five - 3;
+                }else {
+                    return false;
+                }
+        }
+    }
+    return true;
+};
+interface money {
+    five: number,
+    ten: number,
+    twenty: number
+}
+```
+
 
 
 
