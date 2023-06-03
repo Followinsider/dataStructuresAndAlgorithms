@@ -2361,25 +2361,48 @@ function canCompleteCircuit(gas: number[], cost: number[]): number {
 ### [135. 分发糖果](https://leetcode.cn/problems/candy/)
 ```typescript
 function candy(ratings: number[]): number {
-    const candies: number[] = [];
-    candies[0] = 1;
-   const len = ratings.length as number;
+    if (ratings.length <= 0) return 0;
+    const len = ratings.length;
+    // 确保每个孩子至少分配1个糖果
+    let res = new Array(len).fill(1);
 
-    for (let i = 1, length = len; i < length; i++) {
-        if (ratings[i] > ratings[i - 1]) {
-            candies[i] = candies[i - 1] + 1;
-        } else {
-            candies[i] = 1;
+    // 相邻两个孩子评分更高的孩子会获得更多的糖果-右孩子比左孩子高分
+    for (let i = 0; i < len - 1; i++) {
+        if (ratings[i + 1] > ratings[i]) {
+            // 一开始只是res[i + 1]++, 这少思考了如果出现ratings[1,2,3] -> [1,2,2], 应为[1, 2, 3]
+            res[i + 1] = res[i] + 1;
         }
     }
-    
+
+    // 相邻两个孩子评分更高的孩子会获得更多的糖果-处于中间的孩子比它的左孩子高分
     for (let i = len - 2; i >= 0; i--) {
         if (ratings[i] > ratings[i + 1]) {
-            candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            res[i] = Math.max(res[i], res[i + 1] + 1);
         }
     }
-    return candies.reduce((pre, cur) => pre + cur);
+    return res.reduce((cur, pre) => cur + pre);
 };
+
+// function candy(ratings: number[]): number {
+//     const candies: number[] = [];
+//     candies[0] = 1;
+//    const len = ratings.length as number;
+
+//     for (let i = 1, length = len; i < length; i++) {
+//         if (ratings[i] > ratings[i - 1]) {
+//             candies[i] = candies[i - 1] + 1;
+//         } else {
+//             candies[i] = 1;
+//         }
+//     }
+    
+//     for (let i = len - 2; i >= 0; i--) {
+//         if (ratings[i] > ratings[i + 1]) {
+//             candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+//         }
+//     }
+//     return candies.reduce((pre, cur) => pre + cur);
+// };
 ```
 
 
