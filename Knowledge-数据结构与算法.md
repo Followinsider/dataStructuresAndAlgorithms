@@ -2291,47 +2291,118 @@ function largestSumAfterKNegations(nums: number[], k: number): number {
 
 ### [134. 加油站](https://leetcode.cn/problems/gas-station/)
 ```typescript
+// 暴力解法
 function canCompleteCircuit(gas: number[], cost: number[]): number {
-    let total: number = 0;
-    let curGas: number = 0;
-    let tempDiff: number = 0;
-    let resIndex: number = 0;
-    for (let i = 0, length = gas.length; i < length; i++) {
-        tempDiff = gas[i] - cost[i];
-        total += tempDiff;
-        curGas += tempDiff;
-        if (curGas < 0) {
-            resIndex = i + 1;
-            curGas = 0;
+    const len = gas.length as number;
+    // 加油站遍历，如遇到合适的即刻返回起点站
+    for (let i = 0; i < len; i++) {
+        let hasGas:number = gas[i] - cost[i];
+        let recodeRoad:number = (i + 1) % len;
+        while (hasGas > 0 && recodeRoad !== i) {
+            hasGas += gas[recodeRoad] - cost[recodeRoad];
+            recodeRoad = (recodeRoad + 1) % len;
         }
+        // 到这里就是hasGas <= 0 || recodeRoad === i
+        if (hasGas >= 0 && recodeRoad === i) return i
     }
-    if (total < 0) return -1;
-    return resIndex;
+    return -1
 };
+
+
+// 贪心思想-方法1
+// function canCompleteCircuit(gas: number[], cost: number[]): number {
+//     let min = Infinity;
+//     let hasGas = 0;
+//     const len = gas.length;
+
+//     for (let i = 0; i < len; i++) {
+//         hasGas += gas[i] - cost[i];
+//         if (hasGas < min) {
+//             min = hasGas;
+//         }
+
+//     }
+//     // 1.全部的 gas 小于所需，那么跑步了一圈
+//     if (hasGas < 0) return -1;
+
+//     // 2.如果最小的站消耗(gas[i] - cost[i])，那势必走一圈还留存汽油
+//     if (min >= 0) return 0;
+
+//     // 3.当 min < 0 时，此时可以从后边站向前遍历，谁能补差就从谁出发
+//     for (let i = len - 1; i >= 0; i--) {
+//         min += gas[i] - cost[i];
+//         if (min >= 0) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// };
+
+// 贪心思想-方法2
+// function canCompleteCircuit(gas: number[], cost: number[]): number {
+//     let everyStationGetGas: number = 0;
+//     let totalGas: number = 0;
+//     let startIndex: number = 0
+
+//     for (let i = 0; i < gas.length; i++) {
+//         everyStationGetGas += gas[i] - cost[i];
+//         totalGas += gas[i] - cost[i];
+//         // 当发现当前站汽油已经不足以支撑去下一站，更新startIndex
+//         if (everyStationGetGas < 0) {
+//             everyStationGetGas = 0;
+//             startIndex = i + 1;
+//         }
+//     }
+//     if (totalGas < 0) return -1;
+//     return startIndex;
+// };
 ```
 
 ### [135. 分发糖果](https://leetcode.cn/problems/candy/)
 ```typescript
 function candy(ratings: number[]): number {
-    const candies: number[] = [];
-    candies[0] = 1;
-   const len = ratings.length as number;
+    if (ratings.length <= 0) return 0;
+    const len = ratings.length;
+    // 确保每个孩子至少分配1个糖果
+    let res = new Array(len).fill(1);
 
-    for (let i = 1, length = len; i < length; i++) {
-        if (ratings[i] > ratings[i - 1]) {
-            candies[i] = candies[i - 1] + 1;
-        } else {
-            candies[i] = 1;
+    // 相邻两个孩子评分更高的孩子会获得更多的糖果-右孩子比左孩子高分
+    for (let i = 0; i < len - 1; i++) {
+        if (ratings[i + 1] > ratings[i]) {
+            // 一开始只是res[i + 1]++, 这少思考了如果出现ratings[1,2,3] -> [1,2,2], 应为[1, 2, 3]
+            res[i + 1] = res[i] + 1;
         }
     }
-    
+
+    // 相邻两个孩子评分更高的孩子会获得更多的糖果-处于中间的孩子比它的左孩子高分
     for (let i = len - 2; i >= 0; i--) {
         if (ratings[i] > ratings[i + 1]) {
-            candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            res[i] = Math.max(res[i], res[i + 1] + 1);
         }
     }
-    return candies.reduce((pre, cur) => pre + cur);
+    return res.reduce((cur, pre) => cur + pre);
 };
+
+// function candy(ratings: number[]): number {
+//     const candies: number[] = [];
+//     candies[0] = 1;
+//    const len = ratings.length as number;
+
+//     for (let i = 1, length = len; i < length; i++) {
+//         if (ratings[i] > ratings[i - 1]) {
+//             candies[i] = candies[i - 1] + 1;
+//         } else {
+//             candies[i] = 1;
+//         }
+//     }
+    
+//     for (let i = len - 2; i >= 0; i--) {
+//         if (ratings[i] > ratings[i + 1]) {
+//             candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+//         }
+//     }
+//     return candies.reduce((pre, cur) => pre + cur);
+// };
 ```
 
 
@@ -2489,6 +2560,32 @@ function partitionLabels(s: string): number[] {
 
 
 
+### [56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
+```typescript
+function merge(intervals: number[][]): number[][] {
+    const sortedIntervals: number[][] = intervals.sort((a: number[], b: number[]) => a[0] - b[0]);
+    const result: number[][] = [];
+    console.log(sortedIntervals)
+    let limit = sortedIntervals[0];
+    result.push(limit);
+
+    for (let i = 1; i < sortedIntervals.length; i++) {
+        if (sortedIntervals[i][0] <= limit[1]) {
+            result.pop();
+            // Math.max是需要的，防止[[1,4],[2,3]] -> [[1,3]]，应为[[1,4]]
+            let newLimit = [limit[0], Math.max(limit[1], sortedIntervals[i][1])];
+            result.push(newLimit);
+            limit = newLimit;
+        } else {
+            result.push(sortedIntervals[i]);
+            // 忘记加下面这一行，导致[[2,3],[2,2],[3,3],[1,3],[5,7],[2,2],[4,6]] —> [[1,3],[4,6],[5,7]]，应为[[1,3],[4,7]]
+            limit = sortedIntervals[i];
+        }
+    }
+
+    return result;
+}
+```
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
