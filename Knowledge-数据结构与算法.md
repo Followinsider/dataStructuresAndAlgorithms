@@ -2489,6 +2489,32 @@ function partitionLabels(s: string): number[] {
 
 
 
+### [56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
+```typescript
+function merge(intervals: number[][]): number[][] {
+    const sortedIntervals: number[][] = intervals.sort((a: number[], b: number[]) => a[0] - b[0]);
+    const result: number[][] = [];
+    console.log(sortedIntervals)
+    let limit = sortedIntervals[0];
+    result.push(limit);
+
+    for (let i = 1; i < sortedIntervals.length; i++) {
+        if (sortedIntervals[i][0] <= limit[1]) {
+            result.pop();
+            // Math.max是需要的，防止[[1,4],[2,3]] -> [[1,3]]，应为[[1,4]]
+            let newLimit = [limit[0], Math.max(limit[1], sortedIntervals[i][1])];
+            result.push(newLimit);
+            limit = newLimit;
+        } else {
+            result.push(sortedIntervals[i]);
+            // 忘记加下面这一行，导致[[2,3],[2,2],[3,3],[1,3],[5,7],[2,2],[4,6]] —> [[1,3],[4,6],[5,7]]，应为[[1,3],[4,7]]
+            limit = sortedIntervals[i];
+        }
+    }
+
+    return result;
+}
+```
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
