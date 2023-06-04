@@ -2586,6 +2586,38 @@ function merge(intervals: number[][]): number[][] {
     return result;
 }
 ```
+
+### [738. 单调递增的数字](https://leetcode.cn/problems/monotone-increasing-digits/)
+```typescript
+function monotoneIncreasingDigits(n: number): number {
+    // 2023.06.04 感觉此题题解破解妙处 保留已排好序+补充9 如 1220 ->  1199
+    const numArr: number[] = n.toString().split('').map(i => Number(i));
+    const len: number = numArr.length;
+    let targetIndex: number = len;
+
+    // 从后向前遍历,获取未排序起始点，即targetIndex
+    for (let i = len - 1; i > 0; i--) {
+        if (numArr[i - 1] > numArr[i]) {
+            targetIndex = i;
+            numArr[i - 1]--;
+        }
+    }
+
+    // 补充9
+    for (let i = targetIndex; i < len; i++) {
+        numArr[i] = 9;
+    }
+
+    return Number(numArr.map(i => i.toString()).join(''));
+};
+```
+
+
+
+
+
+
+
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
