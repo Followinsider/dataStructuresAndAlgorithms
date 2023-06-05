@@ -2660,7 +2660,19 @@ function minCameraCover(root: TreeNode | null): number {
 
 
 
-
+# 动态规划
+### [509. 斐波那契数](https://leetcode.cn/problems/fibonacci-number/)
+```typescript
+function fib(n: number): number {
+    let res: number[] = [];
+    res[0] = 0;
+    res[1] = 1;
+    for (let i = 2; i <= n; i++) {
+        res[i] = res[i - 1] + res[i - 2];
+    }
+    return res[n];
+};
+```
 
 
 # 各大排序算法以及时间和空间复杂度
