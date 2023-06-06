@@ -2674,6 +2674,21 @@ function fib(n: number): number {
 };
 ```
 
+### [70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs/)
+```typescript
+function climbStairs(n: number): number {
+    if (n <= 0) return 0;
+    const dp:number[] = [];
+    dp[1] = 1;
+    dp[2] = 2;
+    for (let i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+};
+```
+
+
 
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
