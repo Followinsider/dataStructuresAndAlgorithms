@@ -2689,6 +2689,38 @@ function climbStairs(n: number): number {
 ```
 
 
+### [746. 使用最小花费爬楼梯](https://leetcode.cn/problems/min-cost-climbing-stairs/)
+```typescript
+function minCostClimbingStairs(cost: number[]): number {
+    // 第一步可从下标 0 | 1 开始
+    const dp: number[] = [0, 0];
+    // i 要考虑 cost.length 不然计算漏了到达楼顶
+    for (let i = 2; i <= cost.length; i++) {
+        dp[i] = Math.min((dp[i - 1] + cost[i - 1]), (dp[i - 2] + cost[i - 2]));
+    }
+    return dp[cost.length];
+};
+```
+
+### [62. 不同路径](https://leetcode.cn/problems/unique-paths/)
+```typescript
+function uniquePaths(m: number, n: number): number {
+    // 机器人每次走 向下或向左，而初始化时，第一行和第一列均为1，接下来就是加总水平垂直的和
+    const dp:number[][] = Array.from(Array(m), () => new Array(n));;
+    for (let i = 0; i < m; i++) dp[i][0] = 1;
+    for (let i = 0; i < n; i++) dp[0][i] = 1;
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
+        }
+    }
+    return dp[m - 1][n - 1];
+};
+```
+
+
+
+
 
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
