@@ -2762,6 +2762,20 @@ function uniquePathsWithObstacles(obstacleGrid: number[][]): number {
 
 
 
+### [343. 整数拆分](https://leetcode.cn/problems/integer-break/)
+```typescript
+function integerBreak(n: number): number {
+    const dp:number[] = new Array(n + 1).fill(0);
+    dp[2] = 1;
+    for (let i = 3; i <= n; i++) {
+        for (let j = 1; j <= i / 2; j++) {
+            dp[i] = Math.max(dp[i], j * dp[i - j], j * (i - j));
+        }
+    }
+    return dp[n];
+};
+```
+
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
