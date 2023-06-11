@@ -2776,6 +2776,24 @@ function integerBreak(n: number): number {
 };
 ```
 
+
+### [96. 不同的二叉搜索树](https://leetcode.cn/problems/unique-binary-search-trees/)
+```typescript
+function numTrees(n: number): number {
+    const dp: number[] = [];
+    dp[0] = -1;
+    dp[1] = 1;
+    for (let i = 2; i <= n; i++) {
+        dp[i] = 2 * dp[i - 1];
+        for (let j = 1, end = i - 1; j < end; j++) {
+            dp[i] += dp[j] * dp[end - j];
+        }
+    }
+    return dp[n];
+};
+```
+
+
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
