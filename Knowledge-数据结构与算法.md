@@ -2810,6 +2810,27 @@ function lastStoneWeightII(stones: number[]): number {
 };
 ```
 
+### [494. 目标和](https://leetcode.cn/problems/target-sum/)
+```typescript
+function findTargetSumWays(nums: number[], target: number): number {
+    const sum: number = nums.reduce((a: number, b: number): number => a + b);
+
+    if ((sum + target) % 2 || Math.abs(target) > sum) return 0;
+    const left: number = (sum + target) / 2;
+    const dp: number[] = new Array(left + 1).fill(0);
+
+    dp[0] = 1;  
+    for (let i: number = 0; i < nums.length; i++) {
+        for (let j: number = left; j >= nums[i]; j--) {
+            dp[j] += dp[j - nums[i]];
+        }
+    }
+    return dp[left];
+};
+```
+
+
+
 
 
 
