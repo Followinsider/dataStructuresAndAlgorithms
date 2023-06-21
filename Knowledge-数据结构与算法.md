@@ -2881,6 +2881,69 @@ function change(amount: number, coins: number[]): number {
 };
 ```
 
+### [377. 组合总和 Ⅳ](https://leetcode.cn/problems/combination-sum-iv/)
+```typescript
+function combinationSum4(nums: number[], target: number): number {
+    // [1, 2, 3] target 4 -> 7 种组合
+    const dp: number[] = new Array(target + 1).fill(0);
+    dp[0] = 1;
+    for (let i = 0; i <= target; i++) { // 先遍历背包容量
+        for (let j = 0; j < nums.length; j++) { // 再遍历物品
+            if (i >= nums[j]) {
+                dp[i] += dp[i - nums[j]];
+            }
+        }
+    }
+    return dp[target];
+};
+```
+
+### [322. 零钱兑换](https://leetcode.cn/problems/coin-change/)
+```typescript
+function coinChange(coins: number[], amount: number): number {
+    // 先遍历物品还是先遍历容量，考虑点在于 是否在意先后顺序 1，5 和 5，1 对本题来说是否一样？一样则都可以，不一样就要考虑先后
+    const dp: number[] = new Array(amount + 1).fill(Infinity);
+    dp[0] = 0;
+    for (let i = 0; i < coins.length; i++) { // 首先遍历物品
+        for (let j = 0; j <= amount; j++) { // 其次遍历容量
+            if (j >= coins[i]) {
+                dp[j] = Math.min(dp[j - coins[i]] + 1, dp[j]);
+            }
+            
+        }
+    }
+    // console.log(dp);
+    return dp[amount] === Infinity ? -1 : dp[amount];
+};
+```
+
+### [279. 完全平方数](https://leetcode.cn/problems/perfect-squares/)
+```typescript
+function numSquares(n: number): number {
+    // dp[j] 表示和为 j 的完全平方数的最少数量
+    // 物品 容量，初始值只知道 n 为容量，物品在哪？
+    const len = Math.ceil(Math.sqrt(n));
+    const nums: number[] = new Array(len).fill(0);
+    const dp: number[] = new Array(n + 1).fill(Infinity);
+    nums[0] = 1;
+    dp[0] = 0;
+    for (let i = 1; i < len; i++) {
+        nums[i] = Math.pow((i + 1), 2);
+    }
+    // console.log('nums', nums);
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j <= n; j++) {
+            if (j >= nums[i]) {
+                dp[j] = Math.min(dp[j - nums[i]] + 1, dp[j]);
+            }
+        }
+    }
+    // console.log('dp', dp);
+    return dp[n];
+};
+```
+
+
 
 
 # 各大排序算法以及时间和空间复杂度
