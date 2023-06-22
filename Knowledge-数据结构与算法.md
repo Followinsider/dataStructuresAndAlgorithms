@@ -2945,6 +2945,27 @@ function numSquares(n: number): number {
 
 
 
+### [139. 单词拆分](https://leetcode.cn/problems/word-break/)
+```typescript
+function wordBreak(s: string, wordDict: string[]): boolean {
+    // dp[i] 表示 在 字符串s 长度(容量)为 i 时能组成 wordDict, 此题讲究排序
+    const dp: boolean[] = new Array(s.length + 1).fill(false);
+    dp[0] = true;
+
+    for (let i = 1; i <= s.length; i++) { // 首先遍历容量
+        for (let j = 0; j < i; j++) { // 其次遍历物品
+            const str: string = s.slice(j, i);
+            if (wordDict.includes(str) && dp[j] === true) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[s.length];
+};
+```
+
+
 
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
