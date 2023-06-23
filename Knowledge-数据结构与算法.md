@@ -2967,6 +2967,21 @@ function wordBreak(s: string, wordDict: string[]): boolean {
 
 
 
+### [198. 打家劫舍](https://leetcode.cn/problems/house-robber/)
+```typescript
+function rob(nums: number[]): number {
+    // dp[i] 表示偷 i 间房屋最高金额
+    const dp: number[] = new Array(nums.length).fill(0);
+    dp[0] = nums[0];
+    dp[1] = Math.max(dp[0], nums[1]);
+    for (let i = 2; i < nums.length; i++) {
+        dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+    }
+    return dp[nums.length - 1];
+};
+```
+
+
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
