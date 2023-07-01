@@ -3215,6 +3215,28 @@ function maxProfit(prices: number[]): number {
 
 
 
+### [714. 买卖股票的最佳时机含手续费](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+```typescript
+// dp数组状态转移
+function maxProfit(prices: number[], fee: number): number {
+    // 和第二版本的买卖股票一样，只不过需要再卖出股票那里减去手续费即可
+    const len: number = prices.length;
+    if (len <= 0) return 0;
+    const dp: number[][] = new Array(len).fill(0).map(_ => new Array(2).fill(0));
+    /**
+        定义 dp[i][0] 不持有股票状态
+             dp[i][1] 持有股票状态
+     */
+    dp[0][0] = 0;
+    dp[0][1] = -prices[0];
+    for (let i = 1; i < len; i++) {
+        dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i] - fee);
+        dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+    }
+    return dp[len - 1][0];
+};
+```
+
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
