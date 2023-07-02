@@ -3237,6 +3237,61 @@ function maxProfit(prices: number[], fee: number): number {
 };
 ```
 
+
+
+### [300. 最长递增子序列](https://leetcode.cn/problems/longest-increasing-subsequence/)
+```typescript
+function lengthOfLIS(nums: number[]): number {
+    // dp状态转移
+    // dp[i] 表示的是以 nums[i] 为结尾的最长子序列长度
+    const len: number = nums.length;
+    if (len <= 0) return 0;
+    const dp: number[] = new Array(len).fill(1);
+    dp[0] = 1;
+    let result: number = 1;
+    for (let i = 1; i < len; i++) {
+        for(let j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+        result = Math.max(dp[i], result);
+    }
+    console.log(dp);
+    return result;
+};
+
+// function lengthOfLIS(nums: number[]): number {
+//     // 每堆的堆顶
+//     const top = []
+//     // 牌堆数初始化为0
+//     let piles = 0
+//     for (let i = 0; i < nums.length; i++) {
+//         // 要处理的扑克牌
+//         let poker = nums[i]
+//         // 左堆和最又堆进行二分搜索，因为堆顶是有序排的，最终找到该牌要插入的堆
+//         let left = 0, right = piles
+//         while (left < right) {
+//             const mid = Math.floor((left + right) / 2)
+//             if (top[mid] > poker) {
+//                 right = mid
+//             } else if (top[mid] < poker){
+//                 left = mid + 1
+//             } else {
+//                 right = mid
+//             }
+//         }
+
+//         //  没找到合适的牌堆，新建一堆
+//         if (left == piles) piles++
+//         // 把这张牌放到堆顶
+//         top[left] = poker
+//     }
+//     return piles
+// }
+```
+
+
 # 各大排序算法以及时间和空间复杂度
 ## 冒泡排序[ O(n^2)，O(1) ]
 ```javascript
