@@ -237,6 +237,37 @@ function fourSum(nums, target) {
 }
 ```
 
+### [88. 合并两个有序数组](https://www.yuque.com/followinsider/gtygco/hnxg3lteezi2e0hn#l3nSM)
+```typescript
+function merge(nums1: number[], m: number, nums2: number[], n: number): void {
+    let l: number = m - 1, r: number = n - 1, val: number = m + n - 1;
+
+    // 定义一个指针指向 nums1最后,判断其与nums2最后，以此类推
+    while (l >= 0 && r >= 0) {
+        if (nums1[l] > nums2[r]) {
+            nums1[val] = nums1[l];
+            l--;
+            val--;
+        } else {
+            nums1[val] = nums2[r];
+            r--;
+            val--;
+        }
+    }
+    // 当上面while循环是因为 l 退出，则此时需要继续将 nums2 的放进 nums1，反之则不需要，因为 nums1 已经有序
+    while (r >= 0) {
+        if (r === n - 1) {
+            nums1.splice(0, n, ...nums2);
+            return;
+        }
+        nums1[val] = nums2[r];
+        val--;
+        r--;
+    }
+    
+};
+```
+
 
 # 栈结构
 ## 栈的特性与使用
